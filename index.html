@@ -378,6 +378,29 @@
             .library-wrapper { padding: 0 10px; }
             .back-to-shelf-btn { top: 15px; left: 15px; width: 40px; height: 40px; }
         }
+
+        /* BARRAS DE ROLAGEM CUSTOMIZADAS - ADICIONADO AQUI */
+        ::-webkit-scrollbar {
+            width: 12px;
+            height: 12px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #2d1b18; 
+            border-left: 1px solid #3e2723;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d4af37; 
+            border-radius: 8px;
+            border: 3px solid #2d1b18;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #f3e5ab; 
+        }
+        /* Compatibilidade com o Firefox */
+        * {
+            scrollbar-width: auto;
+            scrollbar-color: #d4af37 #2d1b18;
+        }
     </style>
 </head>
 <body class="overflow-hidden">
@@ -547,7 +570,15 @@
             "JULIA PAOLANI ZANZARINI": { type: "video", id: "1QEU3xPROXqbcj7rsA-4eItYLqoX98e8W/view?usp=drive_link" },
             "LARA CRISTINA PIRES CALLEGARI": { type: "video", id: "1KIP-ykGG3Jawb5hS8OtDHyIgN8cZcLuC/view?usp=drive_link" },
             "LIZ RODRIGUES LIMA": { type: "video", id: "1PJT2nXn1_OG94cZb0vsg7_gCpo9lscgz/view?usp=drive_link" },
-            "PEDRO PAOLANI ZANZARINI": { type: "video", id: "1Uy1j4EALlLra2RsS37CW2Wt4xC1GCfi-/view?usp=drive_link" }
+            "PEDRO PAOLANI ZANZARINI": { type: "video", id: "1Uy1j4EALlLra2RsS37CW2Wt4xC1GCfi-/view?usp=drive_link" },
+            "CATARINE LOZANO DA SILVA IANNACCONE": { type: "video", id: "1D4FjlHSeintKfm_YZlkF9BMJS28C8Dou" },
+            "PEDRO LODI PYAIA": { type: "video", id: "15HgJlEotmaokKJnuo0DZpJis7F1ZeWqr" },
+            "GABRIEL REZENDE KOMATSU": { type: "video", id: "11eaLuhH8qZmIXkp-UWPzayxX98YAkBPO" },
+            "JÚLIA TIEMI OLIVEIRA SENDO": { type: "video", id: "1LYI0v465P230XMux0oGT606PKN1fC2-1" },
+            "ALICE PELARINI LEAL FEITOZA": { type: "video", id: "1h1-Cdje7aQW_R1vC9GfC_C7gzrux6Vu1" },
+            "VALENTINA TEBERGES DE SOUZA": { type: "video", id: "12oF6bltpkRttuQ8S6Nss_ldw8hHdQDot" },
+            "CRISTIAN FERRAZ SILVA OLIVEIRA": { type: "video", id: "1C8ufqObntQ9RXSq9kvUeC-oruazprGDV" },
+            "CATARINA SOBREIRA RUAS": { type: "video", id: "1YO9eP-LzXZUzgm183uGlRUAmzreJht7T" }
         };
         
         // DADOS ORGANIZADOS POR UNIDADE E TURMA
@@ -775,6 +806,10 @@
             book.classList.remove('open');
             book.style.transform = "rotateX(5deg)";
             
+            // GARANTIA: Destrava a rolagem da página sempre que fechar o livro
+            document.body.style.overflow = '';
+            document.body.classList.remove('overflow-hidden');
+            
             setTimeout(() => { 
                 document.getElementById('book-modal').style.display = 'none'; 
                 // Limpa o Iframe/Imagem assim que a janela fecha para parar a reprodução do áudio do vídeo
@@ -794,6 +829,7 @@
         function closeVideo() {
             document.getElementById('video-overlay').style.display = 'none';
             document.getElementById('video-container').innerHTML = ''; // Para o vídeo imediatamente para não continuar o som
+            document.body.style.overflow = ''; // GARANTIA: Destrava a rolagem ao fechar o vídeo
         }
 
         function openZoom(src) {
