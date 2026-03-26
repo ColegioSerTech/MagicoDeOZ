@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-PT">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -92,7 +92,7 @@
         .red-book-custom:hover { transform: scale(1.05) translateY(-10px); }
         .red-book-title { color: #d4af37; font-family: 'Playfair Display', serif; font-size: 2.5rem; text-align: center; line-height: 1.1; }
 
-        /* Sidebar (Menu Lateral) */
+        /* Menu Lateral */
         #sidebar {
             position: fixed; top: 0; left: -320px; width: 300px; height: 100%;
             background: #2d1b18; color: white; z-index: 6000;
@@ -116,7 +116,7 @@
         }
         .sidebar-item:hover { background: rgba(212, 175, 55, 0.1); border-color: #d4af37; color: #d4af37; }
 
-        /* Icone do Menu */
+        /* Ícone do Menu */
         .menu-icon {
             position: fixed; top: 25px; left: 25px; z-index: 4500;
             cursor: pointer; background: rgba(0,0,0,0.5); padding: 12px;
@@ -235,19 +235,20 @@
         .page-left { border-radius: 5px 0 0 5px; background: linear-gradient(to right, #e8dfcc, #fdfaf3 10%); border-right: 1px solid rgba(0,0,0,0.1); }
         .page-right { border-radius: 0 5px 5px 0; background: linear-gradient(to left, #e8dfcc, #fdfaf3 10%); }
 
-        /* Container da Imagem com Lupa */
-        .work-image-container {
+        /* Container do Conteúdo (Imagem ou Vídeo) */
+        .work-content-container {
             position: relative;
             width: 100%;
-            height: auto;
+            height: 350px;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
+        /* Estilo para Imagens */
         .work-image { 
             width: 100%; 
-            max-height: 80%; 
+            max-height: 100%; 
             object-fit: contain; 
             border: 10px solid white; 
             box-shadow: 0 5px 20px rgba(0,0,0,0.2); 
@@ -259,17 +260,27 @@
             filter: brightness(1.05);
         }
 
-        /* Estilo da Lupa */
+        /* Estilo para Vídeos/Iframes */
+        .work-video {
+            width: 100%;
+            height: 100%;
+            border: 6px solid white;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            border-radius: 4px;
+            background-color: #000;
+        }
+
+        /* Lupa (apenas para imagens) */
         .zoom-indicator {
             position: absolute;
-            bottom: 20px;
-            right: 20px;
+            bottom: 10px;
+            right: 10px;
             background: rgba(180, 83, 9, 0.9);
             color: white;
             padding: 10px;
             border-radius: 50%;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            pointer-events: none;
+            cursor: pointer;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -361,6 +372,7 @@
             .book-container { width: 300px; height: 420px; }
             .book-inner-pages { width: 600px; }
             .page-base { width: 300px; }
+            .work-content-container { height: 250px; } /* Ajuste de altura no mobile */
             .shelf-row { grid-template-columns: repeat(3, 1fr); padding: 30px 15px 70px 15px; }
             .footer-content { flex-direction: column; gap: 20px; text-align: center; }
             .library-wrapper { padding: 0 10px; }
@@ -370,7 +382,7 @@
 </head>
 <body class="overflow-hidden">
 
-    <!-- Overlay de Zoom -->
+    <!-- Ecrã de Zoom para Imagens -->
     <div id="zoom-overlay" class="image-zoom-overlay">
         <img id="zoomed-img-content" class="zoomed-image" src="" alt="Imagem Ampliada" onclick="closeZoom()">
         <div class="back-to-shelf-btn" onclick="returnToShelf()" title="Voltar para a Estante">
@@ -380,16 +392,23 @@
         </div>
     </div>
 
+    <!-- Ecrã de Visualização para Vídeos (Modo Cinema) -->
+    <div id="video-overlay" class="image-zoom-overlay" style="z-index: 10005;">
+        <div id="video-container" style="width: 90vw; height: 80vh; max-width: 1000px; display: flex; justify-content: center; align-items: center;">
+            <!-- O Iframe será injetado aqui -->
+        </div>
+        <div class="back-to-shelf-btn" onclick="closeVideo()" title="Fechar Vídeo">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </div>
+    </div>
+
     <!-- Menu Lateral -->
     <div id="sidebar-overlay" onclick="closeSidebar()"></div>
     <div id="sidebar">
-        <!-- Seção: Trocar Turma -->
         <h2 class="text-2xl font-bold mb-6 border-b border-amber-500/30 pb-4" style="font-family: 'Cherry Bomb One'">Trocar Turma</h2>
-        <div id="sidebar-classes-container">
-            <!-- Injetado via JS -->
-        </div>
-
-        <!-- Seção: Trocar Unidade -->
+        <div id="sidebar-classes-container"></div>
         <div class="mt-8 border-t border-amber-500/30 pt-6">
             <h2 class="text-2xl font-bold mb-4" style="font-family: 'Cherry Bomb One'">Trocar Unidade</h2>
             <div class="sidebar-item flex items-center gap-3" onclick="changeUnitFromSidebar()">
@@ -399,7 +418,6 @@
                 Voltar e Escolher
             </div>
         </div>
-
         <div id="sidebar-unit-label" class="mt-12 opacity-50 text-xs uppercase tracking-widest text-center">Unidade</div>
     </div>
 
@@ -427,15 +445,13 @@
                     <p class="text-amber-800 italic text-sm text-center">"Não há lugar como o nosso lar."</p>
                 </div>
                 <div class="page-base page-right">
-                    <div class="work-image-container" onclick="openZoom(document.getElementById('work-img').src)">
-                        <img id="work-img" src="" class="work-image" alt="Poema do Aluno">
-                        <div class="zoom-indicator">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
-                            </svg>
-                        </div>
+                    
+                    <!-- Container Dinâmico: Imagem ou Vídeo gerado via JavaScript -->
+                    <div id="work-content-container" class="work-content-container">
+                        <!-- O conteúdo entra aqui -->
                     </div>
-                    <p class="text-[10px] text-amber-600 mt-4 uppercase tracking-widest font-bold">Clique no poema para ampliar</p>
+                    
+                    <p id="zoom-hint-text" class="text-[10px] text-amber-600 mt-4 uppercase tracking-widest font-bold">Clique no trabalho para ampliar</p>
                 </div>
             </div>
         </div>
@@ -444,64 +460,23 @@
     <!-- TELA 1: Seleção de Unidade -->
     <div id="unit-selector">
         <div class="text-center">
-            
-            <!-- LOGO DO COLÉGIO SER ADICIONADO AQUI -->
             <img src="https://lh3.googleusercontent.com/d/15x27AzxW9GANulDbLrYlqzRC6obRAXMI" class="w-40 h-auto mx-auto mb-6 filter brightness-0 invert opacity-90" alt="Logo Colégio Ser">
-            
             <h1 class="text-white text-5xl font-bold mb-16" style="font-family: 'Cherry Bomb One';">Selecione a Unidade</h1>
             
             <div class="flex gap-12 md:gap-24 justify-center flex-wrap px-4">
-                
-                <!-- Mini Estante: Campolim -->
                 <div class="mini-bookshelf" onclick="selectUnit('Campolim')">
                     <div class="unit-plaque"><div class="unit-plaque-title">Campolim</div></div>
-                    <div class="mini-shelf">
-                        <div class="mbk mbk-red"></div>
-                        <div class="mbk mbk-blue" style="margin-left: 8px"></div>
-                        <div class="mbk mbk-gold"></div>
-                        <div class="mbk mbk-green" style="margin-left: 15px"></div>
-                        <div class="mbk mbk-red"></div>
-                    </div>
-                    <div class="mini-shelf">
-                        <div class="mbk mbk-gold" style="margin-left: 12px"></div>
-                        <div class="mbk mbk-green"></div>
-                        <div class="mbk mbk-red" style="margin-left: 5px"></div>
-                        <div class="mbk mbk-blue"></div>
-                        <div class="mbk mbk-gold" style="margin-left: 10px"></div>
-                    </div>
-                    <div class="mini-shelf">
-                        <div class="mbk mbk-blue" style="margin-left: 6px"></div>
-                        <div class="mbk mbk-red"></div>
-                        <div class="mbk mbk-green" style="margin-left: 18px"></div>
-                        <div class="mbk mbk-gold"></div>
-                    </div>
+                    <div class="mini-shelf"><div class="mbk mbk-red"></div><div class="mbk mbk-blue" style="margin-left: 8px"></div><div class="mbk mbk-gold"></div><div class="mbk mbk-green" style="margin-left: 15px"></div><div class="mbk mbk-red"></div></div>
+                    <div class="mini-shelf"><div class="mbk mbk-gold" style="margin-left: 12px"></div><div class="mbk mbk-green"></div><div class="mbk mbk-red" style="margin-left: 5px"></div><div class="mbk mbk-blue"></div><div class="mbk mbk-gold" style="margin-left: 10px"></div></div>
+                    <div class="mini-shelf"><div class="mbk mbk-blue" style="margin-left: 6px"></div><div class="mbk mbk-red"></div><div class="mbk mbk-green" style="margin-left: 18px"></div><div class="mbk mbk-gold"></div></div>
                 </div>
 
-                <!-- Mini Estante: Ser! Criança -->
                 <div class="mini-bookshelf" onclick="selectUnit('Ser! Criança')">
                     <div class="unit-plaque"><div class="unit-plaque-title">Ser! Criança</div></div>
-                    <div class="mini-shelf">
-                        <div class="mbk mbk-blue" style="margin-left: 10px"></div>
-                        <div class="mbk mbk-gold"></div>
-                        <div class="mbk mbk-red" style="margin-left: 10px"></div>
-                        <div class="mbk mbk-green"></div>
-                        <div class="mbk mbk-blue"></div>
-                    </div>
-                    <div class="mini-shelf">
-                        <div class="mbk mbk-green"></div>
-                        <div class="mbk mbk-red" style="margin-left: 15px"></div>
-                        <div class="mbk mbk-gold"></div>
-                        <div class="mbk mbk-blue" style="margin-left: 5px"></div>
-                        <div class="mbk mbk-green"></div>
-                    </div>
-                    <div class="mini-shelf">
-                        <div class="mbk mbk-gold" style="margin-left: 15px"></div>
-                        <div class="mbk mbk-blue"></div>
-                        <div class="mbk mbk-red" style="margin-left: 8px"></div>
-                        <div class="mbk mbk-green"></div>
-                    </div>
+                    <div class="mini-shelf"><div class="mbk mbk-blue" style="margin-left: 10px"></div><div class="mbk mbk-gold"></div><div class="mbk mbk-red" style="margin-left: 10px"></div><div class="mbk mbk-green"></div><div class="mbk mbk-blue"></div></div>
+                    <div class="mini-shelf"><div class="mbk mbk-green"></div><div class="mbk mbk-red" style="margin-left: 15px"></div><div class="mbk mbk-gold"></div><div class="mbk mbk-blue" style="margin-left: 5px"></div><div class="mbk mbk-green"></div></div>
+                    <div class="mini-shelf"><div class="mbk mbk-gold" style="margin-left: 15px"></div><div class="mbk mbk-blue"></div><div class="mbk mbk-red" style="margin-left: 8px"></div><div class="mbk mbk-green"></div></div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -510,18 +485,14 @@
     <div id="class-selector" style="display: none; opacity: 0;">
         <div class="text-center">
             <h1 class="text-white text-5xl font-bold mb-12" style="font-family: 'Cherry Bomb One';">Selecione a Turma</h1>
-            
-            <div id="class-buttons-container" class="flex gap-10 justify-center flex-wrap px-4">
-                <!-- Botões gerados via JS (livros vermelhos) -->
-            </div>
-            
+            <div id="class-buttons-container" class="flex gap-10 justify-center flex-wrap px-4"></div>
             <button onclick="backToUnits()" class="mt-16 text-amber-500 hover:text-white transition cursor-pointer font-bold tracking-widest uppercase text-sm border border-amber-500/50 hover:border-white px-6 py-2 rounded-full">
                 ← Voltar para Unidades
             </button>
         </div>
     </div>
 
-    <!-- Banner Superior -->
+    <!-- Cabeçalho -->
     <header class="banner h-[300px] bg-amber-900 text-white relative shadow-xl border-b-8 border-[#2d1b18] flex items-center px-8 overflow-hidden">
         <div class="absolute inset-0 opacity-40 bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/d/1hm2VI0Mr65rQhvowKYC2jcFE3-KR5EoF')"></div>
         <div class="relative z-10 w-full flex items-center justify-between max-w-7xl mx-auto banner-content">
@@ -544,6 +515,7 @@
         <div class="bookcase" id="shelf-container"></div>
     </div>
 
+    <!-- Rodapé -->
     <footer>
         <div class="footer-content">
             <img src="https://lh3.googleusercontent.com/d/1E49ixG8NWq1CestH_lJJiPxTFzyZT3xb" class="footer-logo" alt="Logo TE Rodapé">
@@ -557,14 +529,28 @@
     </footer>
 
     <script>
-        const ozCover = 'https://lh3.googleusercontent.com/d/1nEdtoMa2uNyQ7cxL6R21oySfKWBuRqQJ';
+        const ozCover = '1nEdtoMa2uNyQ7cxL6R21oySfKWBuRqQJ'; // Capa padrão (Apenas ID)
         document.getElementById('footer-date').innerText = new Date().getFullYear();
 
+        // CONFIGURAÇÃO DOS FICHEIROS (Imagens ou Vídeos)
+        // Adicione 'type': 'image' para imagens e 'type': 'video' para vídeos.
         const mediaConfig = {
-            "ALÍCIA CALIXTO FALQUEIRO": { work: "https://lh3.googleusercontent.com/d/1MYXVZ2T4t2XEyFYcOS5pcCBkTIR_mSGT" }
+            "ALÍCIA CALIXTO FALQUEIRO": { type: "image", id: "1MYXVZ2T4t2XEyFYcOS5pcCBkTIR_mSGT" },
+            "ALICE ALLENDORF GIMENEZ": { type: "video", id: "1HnNQAXqxqsfQEn-oxdA08ULXkKpDl-H-" },
+            "LAURA MEL RIBEIRO MACEDO": { type: "video", id: "1CTagJgePOeSzI6LGMKn1at_MzVJjoThY/view?usp=drive_link" },
+            "ANTONELLA ROQUE PIOVESANI": { type: "video", id: "1gQEpyqnB-wwjjzk52xmZ5wLqGapsS8CF/view?usp=drive_link" },
+            "ARTHUR DO PRADO VALLADARES ALTIERI": { type: "video", id: "11Gi5L9xhg9cTW5fCkHpe8iioeGxiIkAe/view?usp=drive_link" },
+            "ENZO AMORIM THEREZIANO OLIVEIRA": { type: "video", id: "1yW18bAGQCF4E48Xic4oLQO3B4Oix1EIo/view?usp=drive_link" },
+            "ERIC DAIKI ABE": { type: "video", id: "1U8XGM0bP291LR4pDhESOeTqiIOzbPgJW/view?usp=drive_link" },
+            "ISABEL DOMINGUES CHRISTOV": { type: "video", id: "1km22M6vaJLhzT86Zhft1DKzcwB61Vhp_/view?usp=drive_link" },
+            "ISRAEL CORRÊA DO PRADO NETO": { type: "video", id: "1k1izfEyigQlgRCkQ31M4daJW1c_8Jq0P/view?usp=drive_link" },
+            "JULIA PAOLANI ZANZARINI": { type: "video", id: "1QEU3xPROXqbcj7rsA-4eItYLqoX98e8W/view?usp=drive_link" },
+            "LARA CRISTINA PIRES CALLEGARI": { type: "video", id: "1KIP-ykGG3Jawb5hS8OtDHyIgN8cZcLuC/view?usp=drive_link" },
+            "LIZ RODRIGUES LIMA": { type: "video", id: "1PJT2nXn1_OG94cZb0vsg7_gCpo9lscgz/view?usp=drive_link" },
+            "PEDRO PAOLANI ZANZARINI": { type: "video", id: "1Uy1j4EALlLra2RsS37CW2Wt4xC1GCfi-/view?usp=drive_link" }
         };
         
-        // DADOS ORGANIZADOS POR UNIDADE
+        // DADOS ORGANIZADOS POR UNIDADE E TURMA
         const studentsData = {
             "Campolim": {
                 '5ºA': ["ALÍCIA CALIXTO FALQUEIRO", "ANGELO BRUGINSKI SCUDERI", "ARTHUR KENJI NAKAGAWA", "BERNARDO CHRISTIAN RIBEIRO FREIRE", "CAROLINA DE QUEIROZ MOREIRA", "CECÍLIA LEONEL NALESSO", "DANIEL SALVARANI GUARINHO", "EDUARDO FANTAZZINI GRANDISOLI", "EMI SAKIHAMA", "FERNANDA AKARI KIMURA", "GAEL FARHA CONDE", "GUSTAVO DE SOUZA SAMPAIO", "GUSTAVO SILVA E SOUZA", "HELENA HERINGER ROCHA SAD", "HELOISA ROSA DE SOUZA BARRETO", "JÚLIA ROSÁTI SILVA", "LORENA DE CARVALHO SALLES", "LORENZO AMARAL FURIGO CARDOSO", "LUCAS CASTELLI ALBUQUERQUE", "LUCAS OLIVEIRA MAIA", "LUCAS TADEU MUNIZ DA SILVA", "LUIZA BELLOTTO BARRETTO", "MARINA SARTORETO FERNANDES", "PEDRO RIBEIRO DE OLIVEIRA", "RAFAEL WATANABE SOUZA BARBIERI", "RAFAELLA MUOIO POLIDO", "SCARLETT GRACE LIMA CUSTODIO", "THEO BRITO SEGAMARCHI"],
@@ -599,12 +585,10 @@
         function selectUnit(unit) {
             currentUnit = unit;
             
-            // Atualizar textos visuais da unidade escolhida
             document.getElementById('current-unit-banner').innerText = unit;
             document.getElementById('current-unit-footer').innerText = unit;
             document.getElementById('sidebar-unit-label').innerText = `Unidade ${unit}`;
 
-            // Injetar os botões de turma baseados na unidade
             const classContainer = document.getElementById('class-buttons-container');
             const sidebarContainer = document.getElementById('sidebar-classes-container');
             
@@ -614,19 +598,16 @@
             const turmas = Object.keys(studentsData[unit]);
             
             turmas.forEach(cls => {
-                // Tela Principal (livros vermelhos mantidos aqui)
                 classContainer.innerHTML += `
                     <div class="red-book-custom" onclick="startApp('${cls}')">
                         <span class="red-book-title">${cls}</span>
                     </div>
                 `;
-                // Sidebar
                 sidebarContainer.innerHTML += `
                     <div class="sidebar-item" onclick="changeClass('${cls}')">Turma ${cls}</div>
                 `;
             });
 
-            // Transição Unidade -> Turma (Crossfade suave)
             const unitSelector = document.getElementById('unit-selector');
             const classSelector = document.getElementById('class-selector');
             
@@ -636,12 +617,9 @@
             unitSelector.style.opacity = '0';
             classSelector.style.opacity = '1';
             
-            setTimeout(() => {
-                unitSelector.style.display = 'none';
-            }, 600);
+            setTimeout(() => { unitSelector.style.display = 'none'; }, 600);
         }
 
-        // VOLTAR PARA SELEÇÃO DE UNIDADE
         function backToUnits() {
             const unitSelector = document.getElementById('unit-selector');
             const classSelector = document.getElementById('class-selector');
@@ -652,26 +630,19 @@
             classSelector.style.opacity = '0';
             unitSelector.style.opacity = '1';
             
-            setTimeout(() => {
-                classSelector.style.display = 'none';
-            }, 600);
+            setTimeout(() => { classSelector.style.display = 'none'; }, 600);
         }
 
-        // VOLTAR PARA UNIDADES VIA SIDEBAR
         function changeUnitFromSidebar() {
             closeSidebar();
-            
             const unitSelector = document.getElementById('unit-selector');
             unitSelector.style.display = 'flex';
             void unitSelector.offsetWidth;
             unitSelector.style.opacity = '1';
-            
-            // Esconde o icone de menu e impede o scroll
             document.getElementById('main-menu-icon').style.display = 'none';
             document.body.classList.add('overflow-hidden');
         }
 
-        // INICIAR A ESTANTE
         function startApp(className) {
             const classSelector = document.getElementById('class-selector');
             classSelector.style.opacity = '0';
@@ -709,8 +680,6 @@
         function renderShelf(className) {
             const container = document.getElementById('shelf-container');
             container.innerHTML = '';
-            
-            // Pega os alunos baseados na unidade atual e na turma clicada
             const students = studentsData[currentUnit][className].sort();
             const perRow = 5; 
             
@@ -731,16 +700,61 @@
             }
         }
 
+        // FUNÇÃO ATUALIZADA PARA SUPORTAR VÍDEOS E IMAGENS
         function openModal(name) {
             const modal = document.getElementById('book-modal');
             const book = document.getElementById('book-element');
-            const img = document.getElementById('work-img');
+            const contentContainer = document.getElementById('work-content-container');
+            const zoomHint = document.getElementById('zoom-hint-text');
             
             document.getElementById('cover-name-text').innerText = name;
             document.getElementById('inner-student-name').innerText = name;
             
             const config = mediaConfig[name];
-            img.src = config ? config.work : ozCover;
+            
+            // Limpa o conteúdo anterior para evitar que vídeos continuem a tocar
+            contentContainer.innerHTML = ''; 
+
+            if (config && config.type === 'video') {
+                // Remove qualquer "/view..." que o utilizador tenha colocado para garantir que usa o modo /preview do iframe
+                const cleanId = config.id.split('/')[0]; 
+
+                // Criar um botão/miniatura de Play dentro da página do livro
+                contentContainer.innerHTML = `
+                    <div onclick="openVideo('${cleanId}')" class="group relative w-full h-full bg-black flex items-center justify-center cursor-pointer border-[6px] border-white rounded-md shadow-[0_5px_20px_rgba(0,0,0,0.3)] overflow-hidden transition-transform hover:scale-[1.02]">
+                        <img src="https://lh3.googleusercontent.com/d/1hm2VI0Mr65rQhvowKYC2jcFE3-KR5EoF" class="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-60 transition-opacity">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 text-[#d4af37] z-10 drop-shadow-[0_0_15px_rgba(0,0,0,0.8)] group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                `;
+                
+                zoomHint.style.display = 'block';
+                zoomHint.innerText = 'Clique para assistir ao vídeo em tela cheia';
+            } else {
+                // Incorporar Imagem Normal
+                const imgId = config ? config.id : ozCover;
+                const fullImgSrc = `https://lh3.googleusercontent.com/d/${imgId}`;
+                
+                contentContainer.innerHTML = `
+                    <img id="work-img" src="${fullImgSrc}" class="work-image" alt="Trabalho do Aluno">
+                    <div class="zoom-indicator" onclick="openZoom('${fullImgSrc}')">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                        </svg>
+                    </div>
+                `;
+                
+                // Permitir clique direto na imagem para dar zoom
+                setTimeout(() => {
+                    const imgElement = document.getElementById('work-img');
+                    if (imgElement) imgElement.onclick = () => openZoom(fullImgSrc);
+                }, 50);
+
+                zoomHint.style.display = 'block';
+                zoomHint.innerText = 'Clique na imagem para ampliar';
+            }
             
             modal.style.display = 'flex';
             book.classList.remove('open');
@@ -755,11 +769,31 @@
             }
         }
 
+        // LIMPAR O CONTEÚDO AO FECHAR O LIVRO
         function closeBook() {
             const book = document.getElementById('book-element');
             book.classList.remove('open');
             book.style.transform = "rotateX(5deg)";
-            setTimeout(() => { document.getElementById('book-modal').style.display = 'none'; }, 850);
+            
+            setTimeout(() => { 
+                document.getElementById('book-modal').style.display = 'none'; 
+                // Limpa o Iframe/Imagem assim que a janela fecha para parar a reprodução do áudio do vídeo
+                document.getElementById('work-content-container').innerHTML = '';
+            }, 850);
+        }
+
+        // FUNÇÕES PARA O VÍDEO EM TELA CHEIA
+        function openVideo(videoId) {
+            const overlay = document.getElementById('video-overlay');
+            const container = document.getElementById('video-container');
+            container.innerHTML = `<iframe src="https://drive.google.com/file/d/${videoId}/preview" style="width: 100%; height: 100%; border: 4px solid #d4af37; border-radius: 12px; box-shadow: 0 20px 50px rgba(0,0,0,0.9); background: black;" allow="autoplay" allowfullscreen></iframe>`;
+            overlay.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeVideo() {
+            document.getElementById('video-overlay').style.display = 'none';
+            document.getElementById('video-container').innerHTML = ''; // Para o vídeo imediatamente para não continuar o som
         }
 
         function openZoom(src) {
