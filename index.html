@@ -2,7 +2,7 @@
 <html lang="pt-PT">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Projeto de Leitura: Mágico de Oz</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&family=Cherry+Bomb+One&family=Playfair+Display:wght@700&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
@@ -199,6 +199,12 @@
             justify-content: center; align-items: center; perspective: 2000px;
             backdrop-filter: blur(10px);
         }
+        
+        .modal-scale-wrapper {
+            width: 100%; height: 100%;
+            display: flex; justify-content: center; align-items: center;
+            transition: transform 0.3s ease;
+        }
 
         .book-container {
             width: 400px; height: 550px; position: relative; transform-style: preserve-3d;
@@ -368,18 +374,34 @@
         }
         .footer-logo:hover { opacity: 1; }
 
+        /* --- RESPONSIVIDADE E MOBILE --- */
         @media (max-width: 900px) {
             .book-container { width: 300px; height: 420px; }
             .book-inner-pages { width: 600px; }
             .page-base { width: 300px; }
-            .work-content-container { height: 250px; } /* Ajuste de altura no mobile */
+            .work-content-container { height: 250px; } 
             .shelf-row { grid-template-columns: repeat(3, 1fr); padding: 30px 15px 70px 15px; }
             .footer-content { flex-direction: column; gap: 20px; text-align: center; }
             .library-wrapper { padding: 0 10px; }
             .back-to-shelf-btn { top: 15px; left: 15px; width: 40px; height: 40px; }
         }
+        
+        @media (max-width: 650px) {
+            /* Escala o livro 3D inteiro para caber em ecrãs pequenos sem quebrar a animação */
+            .modal-scale-wrapper { transform: scale(0.55); }
+            .shelf-row { grid-template-columns: repeat(2, 1fr); gap: 40px 15px; padding: 20px 10px 60px 10px; }
+            .book-item { width: 110px; height: 160px; }
+            .student-name-tag { width: 130px; font-size: 0.65rem; bottom: -50px; }
+            .small-name-gold { font-size: 0.6rem; }
+            .book-cover-small { padding: 10px; border-left-width: 5px; }
+            .close-btn { top: 15px; right: 15px; width: 40px; height: 40px; font-size: 1.2rem; }
+        }
 
-        /* BARRAS DE ROLAGEM CUSTOMIZADAS - ADICIONADO AQUI */
+        @media (max-width: 400px) {
+            .modal-scale-wrapper { transform: scale(0.45); }
+        }
+
+        /* BARRAS DE ROLAGEM CUSTOMIZADAS */
         ::-webkit-scrollbar {
             width: 12px;
             height: 12px;
@@ -453,28 +475,31 @@
     <!-- Modal do Livro -->
     <div id="book-modal">
         <div class="close-btn" onclick="closeBook()">✕</div>
-        <div class="book-container" id="book-element">
-            <div class="cover-main" id="modal-cover-front" onclick="toggleBookOpen(event)">
-                <div class="main-title-gold text-[#d4af37] text-lg tracking-[4px]" style="font-family: 'Cinzel'">MÁGICO DE OZ</div>
-                <div id="cover-name-text" class="main-name-gold text-[#f3e5ab] text-3xl font-bold" style="font-family: 'Playfair Display'"></div>
-                <img src="https://lh3.googleusercontent.com/d/15x27AzxW9GANulDbLrYlqzRC6obRAXMI" class="w-16 h-auto mb-4 filter brightness-0 invert" alt="Logo">
-                <div class="text-[#d4af37] text-xs animate-pulse">Clique para folhear</div>
-            </div>
-
-            <div class="book-inner-pages" id="inner-pages">
-                <div class="page-base page-left">
-                    <h2 id="inner-student-name" class="text-2xl font-bold text-amber-900 mb-2 text-center" style="font-family: 'Playfair Display'"></h2>
-                    <div class="w-12 h-1 bg-amber-400 mb-6 rounded-full"></div>
-                    <p class="text-amber-800 italic text-sm text-center">"Não há lugar como o nosso lar."</p>
+        <!-- Envoltório para aplicar escala no mobile -->
+        <div class="modal-scale-wrapper">
+            <div class="book-container" id="book-element">
+                <div class="cover-main" id="modal-cover-front" onclick="toggleBookOpen(event)">
+                    <div class="main-title-gold text-[#d4af37] text-lg tracking-[4px]" style="font-family: 'Cinzel'">MÁGICO DE OZ</div>
+                    <div id="cover-name-text" class="main-name-gold text-[#f3e5ab] text-3xl font-bold" style="font-family: 'Playfair Display'"></div>
+                    <img src="https://lh3.googleusercontent.com/d/15x27AzxW9GANulDbLrYlqzRC6obRAXMI" class="w-16 h-auto mb-4 filter brightness-0 invert" alt="Logo">
+                    <div class="text-[#d4af37] text-xs animate-pulse">Clique para folhear</div>
                 </div>
-                <div class="page-base page-right">
-                    
-                    <!-- Container Dinâmico: Imagem ou Vídeo gerado via JavaScript -->
-                    <div id="work-content-container" class="work-content-container">
-                        <!-- O conteúdo entra aqui -->
+
+                <div class="book-inner-pages" id="inner-pages">
+                    <div class="page-base page-left">
+                        <h2 id="inner-student-name" class="text-2xl font-bold text-amber-900 mb-2 text-center" style="font-family: 'Playfair Display'"></h2>
+                        <div class="w-12 h-1 bg-amber-400 mb-6 rounded-full"></div>
+                        <p class="text-amber-800 italic text-sm text-center">"Não há lugar como o nosso lar."</p>
                     </div>
-                    
-                    <p id="zoom-hint-text" class="text-[10px] text-amber-600 mt-4 uppercase tracking-widest font-bold">Clique no trabalho para ampliar</p>
+                    <div class="page-base page-right">
+                        
+                        <!-- Container Dinâmico: Imagem ou Vídeo gerado via JavaScript -->
+                        <div id="work-content-container" class="work-content-container">
+                            <!-- O conteúdo entra aqui -->
+                        </div>
+                        
+                        <p id="zoom-hint-text" class="text-[10px] text-amber-600 mt-4 uppercase tracking-widest font-bold">Clique no trabalho para ampliar</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -482,11 +507,11 @@
 
     <!-- TELA 1: Seleção de Unidade -->
     <div id="unit-selector">
-        <div class="text-center">
-            <img src="https://lh3.googleusercontent.com/d/15x27AzxW9GANulDbLrYlqzRC6obRAXMI" class="w-40 h-auto mx-auto mb-6 filter brightness-0 invert opacity-90" alt="Logo Colégio Ser">
-            <h1 class="text-white text-5xl font-bold mb-16" style="font-family: 'Cherry Bomb One';">Selecione a Unidade</h1>
+        <div class="text-center px-4 w-full">
+            <img src="https://lh3.googleusercontent.com/d/15x27AzxW9GANulDbLrYlqzRC6obRAXMI" class="w-24 md:w-40 h-auto mx-auto mb-6 filter brightness-0 invert opacity-90" alt="Logo Colégio Ser">
+            <h1 class="text-white text-4xl md:text-5xl font-bold mb-10 md:mb-16" style="font-family: 'Cherry Bomb One';">Selecione a Unidade</h1>
             
-            <div class="flex gap-12 md:gap-24 justify-center flex-wrap px-4">
+            <div class="flex gap-8 md:gap-24 justify-center flex-wrap">
                 <div class="mini-bookshelf" onclick="selectUnit('Campolim')">
                     <div class="unit-plaque"><div class="unit-plaque-title">Campolim</div></div>
                     <div class="mini-shelf"><div class="mbk mbk-red"></div><div class="mbk mbk-blue" style="margin-left: 8px"></div><div class="mbk mbk-gold"></div><div class="mbk mbk-green" style="margin-left: 15px"></div><div class="mbk mbk-red"></div></div>
@@ -506,30 +531,30 @@
 
     <!-- TELA 2: Seleção de Turma -->
     <div id="class-selector" style="display: none; opacity: 0;">
-        <div class="text-center">
-            <h1 class="text-white text-5xl font-bold mb-12" style="font-family: 'Cherry Bomb One';">Selecione a Turma</h1>
-            <div id="class-buttons-container" class="flex gap-10 justify-center flex-wrap px-4"></div>
-            <button onclick="backToUnits()" class="mt-16 text-amber-500 hover:text-white transition cursor-pointer font-bold tracking-widest uppercase text-sm border border-amber-500/50 hover:border-white px-6 py-2 rounded-full">
+        <div class="text-center px-4 w-full">
+            <h1 class="text-white text-4xl md:text-5xl font-bold mb-8 md:mb-12" style="font-family: 'Cherry Bomb One';">Selecione a Turma</h1>
+            <div id="class-buttons-container" class="flex gap-6 md:gap-10 justify-center flex-wrap px-2"></div>
+            <button onclick="backToUnits()" class="mt-12 md:mt-16 text-amber-500 hover:text-white transition cursor-pointer font-bold tracking-widest uppercase text-xs md:text-sm border border-amber-500/50 hover:border-white px-6 py-2 rounded-full">
                 ← Voltar para Unidades
             </button>
         </div>
     </div>
 
     <!-- Cabeçalho -->
-    <header class="banner h-[300px] bg-amber-900 text-white relative shadow-xl border-b-8 border-[#2d1b18] flex items-center px-8 overflow-hidden">
+    <header class="banner min-h-[220px] md:min-h-[300px] py-8 md:py-0 bg-amber-900 text-white relative shadow-xl border-b-8 border-[#2d1b18] flex items-center px-4 md:px-8 overflow-hidden">
         <div class="absolute inset-0 opacity-40 bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/d/1hm2VI0Mr65rQhvowKYC2jcFE3-KR5EoF')"></div>
-        <div class="relative z-10 w-full flex items-center justify-between max-w-7xl mx-auto banner-content">
-            <div class="flex-shrink-0"><img src="https://lh3.googleusercontent.com/d/15x27AzxW9GANulDbLrYlqzRC6obRAXMI" class="w-24 h-auto filter brightness-0 invert" alt="Logo Colégio"></div>
-            <div class="text-center flex-grow px-4">
-                <h1 class="text-6xl font-bold leading-tight" style="font-family: 'Cherry Bomb One'; text-shadow: 4px 4px 0px #3e2723;">Estante Virtual</h1>
+        <div class="relative z-10 w-full flex flex-col md:flex-row items-center justify-between max-w-7xl mx-auto banner-content">
+            <div class="flex-shrink-0 mb-3 md:mb-0"><img src="https://lh3.googleusercontent.com/d/15x27AzxW9GANulDbLrYlqzRC6obRAXMI" class="w-16 md:w-24 h-auto filter brightness-0 invert" alt="Logo Colégio"></div>
+            <div class="text-center flex-grow px-2 md:px-4">
+                <h1 class="text-4xl md:text-6xl font-bold leading-tight" style="font-family: 'Cherry Bomb One'; text-shadow: 4px 4px 0px #3e2723;">Estante Virtual</h1>
                 <div class="flex flex-col items-center mt-2">
-                    <div class="w-24 h-1 bg-amber-500/50 mb-3 rounded-full"></div>
-                    <p class="bg-amber-800/90 border border-amber-600/50 px-8 py-2 rounded-full text-sm font-bold tracking-[0.2em] uppercase shadow-lg">
-                        Mágico de Oz • <span id="current-unit-banner">Unidade</span> • <span id="current-class-label">Turma</span>
+                    <div class="w-16 md:w-24 h-1 bg-amber-500/50 mb-3 rounded-full"></div>
+                    <p class="bg-amber-800/90 border border-amber-600/50 px-4 md:px-8 py-1.5 md:py-2 rounded-full text-[10px] md:text-sm font-bold tracking-[0.1em] md:tracking-[0.2em] uppercase shadow-lg">
+                        Mágico de Oz <span class="hidden md:inline">•</span><br class="block md:hidden"> <span id="current-unit-banner">Unidade</span> • <span id="current-class-label">Turma</span>
                     </p>
                 </div>
             </div>
-            <div class="flex-shrink-0 w-24"></div>
+            <div class="hidden md:block flex-shrink-0 w-24"></div>
         </div>
     </header>
 
@@ -541,11 +566,11 @@
     <!-- Rodapé -->
     <footer>
         <div class="footer-content">
-            <img src="https://lh3.googleusercontent.com/d/1E49ixG8NWq1CestH_lJJiPxTFzyZT3xb" class="footer-logo" alt="Logo TE Rodapé">
-            <div class="text-right">
+            <img src="https://lh3.googleusercontent.com/d/1E49ixG8NWq1CestH_lJJiPxTFzyZT3xb" class="footer-logo mx-auto md:mx-0 mb-4 md:mb-0" alt="Logo TE Rodapé">
+            <div class="text-center md:text-right">
                 <p class="text-lg font-bold uppercase tracking-[3px]" style="font-family: 'Cinzel'">Colégio Ser</p>
                 <p class="text-[10px] opacity-60 uppercase tracking-widest mb-2">Unidade <span id="current-unit-footer">Unidade</span></p>
-                <div class="w-12 h-0.5 bg-amber-600 ml-auto mb-2"></div>
+                <div class="w-12 h-0.5 bg-amber-600 mx-auto md:ml-auto md:mr-0 mb-2"></div>
                 <p class="text-xs">Estante Virtual 5º Ano • <span id="footer-date"></span></p>
             </div>
         </div>
@@ -578,7 +603,8 @@
             "ALICE PELARINI LEAL FEITOZA": { type: "video", id: "1h1-Cdje7aQW_R1vC9GfC_C7gzrux6Vu1" },
             "VALENTINA TEBERGES DE SOUZA": { type: "video", id: "12oF6bltpkRttuQ8S6Nss_ldw8hHdQDot" },
             "CRISTIAN FERRAZ SILVA OLIVEIRA": { type: "video", id: "1C8ufqObntQ9RXSq9kvUeC-oruazprGDV" },
-            "CATARINA SOBREIRA RUAS": { type: "video", id: "1YO9eP-LzXZUzgm183uGlRUAmzreJht7T" }
+            "CATARINA SOBREIRA RUAS": { type: "video", id: "1YO9eP-LzXZUzgm183uGlRUAmzreJht7T" },
+            "SAMUEL SILVA GIACON": { type: "video", id: "1qh4iXW324W-pQ-kd_deZoXvpPGXJXvz3" }
         };
         
         // DADOS ORGANIZADOS POR UNIDADE E TURMA
