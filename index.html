@@ -426,6 +426,7 @@
 </head>
 <body class="overflow-hidden">
 
+    <!-- Ecrã de Zoom para Imagens -->
     <div id="zoom-overlay" class="image-zoom-overlay">
         <img id="zoomed-img-content" class="zoomed-image" src="" alt="Imagem Ampliada" onclick="closeZoom()">
         <div class="back-to-shelf-btn" onclick="returnToShelf()" title="Voltar para a Estante">
@@ -435,6 +436,7 @@
         </div>
     </div>
 
+    <!-- Ecrã de Visualização para Vídeos (Modo Cinema) -->
     <div id="video-overlay" class="image-zoom-overlay" style="z-index: 10005;">
         <div id="video-container" style="width: 90vw; height: 80vh; max-width: 1000px; display: flex; justify-content: center; align-items: center;">
         </div>
@@ -445,6 +447,7 @@
         </div>
     </div>
 
+    <!-- Menu Lateral -->
     <div id="sidebar-overlay" onclick="closeSidebar()"></div>
     <div id="sidebar">
         <h2 class="text-2xl font-bold mb-6 border-b border-amber-500/30 pb-4" style="font-family: 'Cherry Bomb One'">Trocar Turma</h2>
@@ -467,6 +470,7 @@
         </svg>
     </div>
 
+    <!-- Modal do Livro -->
     <div id="book-modal">
         <div class="close-btn" onclick="closeBook()">✕</div>
         <div class="modal-scale-wrapper">
@@ -494,6 +498,7 @@
         </div>
     </div>
 
+    <!-- TELA 1: Seleção de Unidade -->
     <div id="unit-selector">
         <div class="text-center px-4 w-full">
             <img src="https://lh3.googleusercontent.com/d/15x27AzxW9GANulDbLrYlqzRC6obRAXMI" class="w-24 md:w-40 h-auto mx-auto mb-6 filter brightness-0 invert opacity-90" alt="Logo Colégio Ser">
@@ -517,6 +522,7 @@
         </div>
     </div>
 
+    <!-- TELA 2: Seleção de Turma -->
     <div id="class-selector" style="display: none; opacity: 0;">
         <div class="text-center px-4 w-full">
             <h1 class="text-white text-4xl md:text-5xl font-bold mb-8 md:mb-12" style="font-family: 'Cherry Bomb One';">Selecione a Turma</h1>
@@ -527,6 +533,7 @@
         </div>
     </div>
 
+    <!-- Cabeçalho -->
     <header class="banner min-h-[220px] md:min-h-[300px] py-8 md:py-0 bg-amber-900 text-white relative shadow-xl border-b-8 border-[#2d1b18] flex items-center px-4 md:px-8 overflow-hidden">
         <div class="absolute inset-0 opacity-40 bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/d/1hm2VI0Mr65rQhvowKYC2jcFE3-KR5EoF')"></div>
         <div class="relative z-10 w-full flex flex-col md:flex-row items-center justify-between max-w-7xl mx-auto banner-content">
@@ -544,10 +551,12 @@
         </div>
     </header>
 
+    <!-- Área da Estante -->
     <div class="library-wrapper" id="lib-view">
         <div class="bookcase" id="shelf-container"></div>
     </div>
 
+    <!-- Rodapé -->
     <footer>
         <div class="footer-content">
             <img src="https://lh3.googleusercontent.com/d/1E49ixG8NWq1CestH_lJJiPxTFzyZT3xb" class="footer-logo mx-auto md:mx-0 mb-4 md:mb-0" alt="Logo TE Rodapé">
@@ -607,6 +616,21 @@
             "JOÃO MIGUEL POMPÉU MENCK": { type: "video", id: "1CK0-8ENM2hTGHF5G1tBK4-fTm3iIIRBg" },
             "PEDRO BUFFO GABRIEL": { type: "video", id: "1qXYQc2WzsDmF9kd4qhdHnMlA4Fi2i6OG" },
             "GABRIELA ZANGRANDI MADELLA": { type: "video", id: "1MZ4mKHf11-Eu4ffNP5ZILweHZ7bdYyNk" },
+            "RAFAEL MAIA GREGIO": { type: "video", id: "1s3QNLDeds5_FPgk8BCpeBGyuNPsAj7RP" },
+            "DANIEL SILVA RODRIGUES": { type: "video", id: "15HqhbRHENRWDmK1FKgVUaD_4euEAmv5B" },
+            "ISABELLE RODRIGUES LUI MARCHETTI": { type: "video", id: "1G87QyigN59Yyi-bTOyGv2njAXeY4T49N" },
+            "MARIA LUÍSA ANACLETO BENTO LAURINDO": { type: "video", id: "1hPaeqnwyPf_ZgxSyczUlxAatkT-QVdaC" },
+            "MARIA SOFIA ANACLETO BENTO LAURINDO": { type: "video", id: "12AryxcjOfd-AxkRVPrvBNZZsckaX5hZp" },
+            "LÍVIA SAQUETTE DIAS": { type: "video", id: "1SoOkwzko4NcI9LfkBggEKhpGSJiqkqte" },
+            "NICOLAS GERBOVIC RIBEIRO MONTEIRO": { type: "video", id: "1NE0WAs8TzTrnyC7znQoQj9MOy2G0mo9b" },
+
+            // Ser Criança - 5ºB (Novos alunos)
+            "ALICE KURYURA VALLADÃO": { type: "video", id: "1Fji4HIekwVx596xJrSFw3s9pkJCd8GX8" },
+            "PEDRO CALIMAN SAMARRA": { type: "video", id: "1dXP1W-eBNevVncmJpJIVd-nzadjssB_t" },
+            "VALENTINA CAMARGO DA COSTA": { type: "video", id: "1HAVtT_Vb8QbhWCmHjxI_Dl8TB4H3-2u4" },
+            "VALENTINA DINIS FREITAS": { type: "video", id: "1Hx-8jrIwm4Dze5StXkNxVFYceBZF-0f7" },
+            "VALENTINA MIYUKI PARANÁ DO BRASIL TAKAKI": { type: "video", id: "1dzXNbCt-PZd4hQGMvSu0wkbQODd3GR9x" },
+            "YOUSSEF MOHAMAD TEIXEIRA": { type: "video", id: "1tCEfHZ36dYLNqljIh1oBx00pOMOl1G86" },
 
             // Campolim - 5ºB
             "PEDRO CAMPOS VIZCARRA ZUNIGA": { type: "video", id: "1fyDLG63tjkQed8Lqr-ES_pbErVH9wax1" },
@@ -690,8 +714,6 @@
             "PEDRO RIBEIRO DE OLIVEIRA": { type: "video", id: "1zlIQWQ-PDrwQ_WCgu3sASqZe_JTcq-Zr" },
             "RAFAEL WATANABE SOUZA BARBIERI": { type: "video", id: "1cxRFwuulgkL5NFoAD5x15p6AYbMHgcrU" },
             "RAFAELLA MUOIO POLIDO": { type: "video", id: "1I-JVzClT6deJzhOOGgYNC-xABeMWIT8Y" },
-            
-            // Novas adições Campolim - 5ºA
             "GUSTAVO DE SOUZA SAMPAIO": { type: "video", id: "1eVIpDbzbbB14gieXz_nT2Lv2QCsHfN88" },
             "HELOISA ROSA DE SOUZA BARRETO": { type: "video", id: "1Wt8wDtLxLawol-0dofIM_nHznyfBd89h" },
             "LORENA DE CARVALHO SALLES": { type: "video", id: "1BHZUc25msz5gMeYysy7Ysw90FOe1SJNi" }
@@ -701,7 +723,7 @@
         const studentsData = {
             "Campolim": {
                 '5ºA': ["ALÍCIA CALIXTO FALQUEIRO", "ANGELO BRUGINSKI SCUDERI", "ARTHUR KENJI NAKAGAWA", "BERNARDO CHRISTIAN RIBEIRO FREIRE", "CAROLINA DE QUEIROZ MOREIRA", "CECÍLIA LEONEL NALESSO", "DANIEL SALVARANI GUARINHO", "EDUARDO FANTAZZINI GRANDISOLI", "EMI SAKIHAMA", "FERNANDA AKARI KIMURA", "GAEL FARHA CONDE", "GUSTAVO DE SOUZA SAMPAIO", "GUSTAVO SILVA E SOUZA", "HELENA HERINGER ROCHA SAD", "HELOISA ROSA DE SOUZA BARRETO", "JÚLIA ROSÁTI SILVA", "LORENA DE CARVALHO SALLES", "LORENZO AMARAL FURIGO CARDOSO", "LUCAS CASTELLI ALBUQUERQUE", "LUCAS OLIVEIRA MAIA", "LUCAS TADEU MUNIZ DA SILVA", "LUIZA BELLOTTO BARRETTO", "MARINA SARTORETO FERNANDES", "PEDRO RIBEIRO DE OLIVEIRA", "RAFAEL WATANABE SOUZA BARBIERI", "RAFAELLA MUOIO POLIDO", "SCARLETT GRACE LIMA CUSTODIO", "THEO BRITO SEGAMARCHI"],
-                '5ºB': ["ALICE BELLUCCI ASCENCIO", "ALICE DE FREITAS OLHIER", "ANTONELLA JULIO VETTORAZZO CHIESA REY", "ARTHUR CORDEIRO PIZA", "BERNARDO VENTURA SÃO PIETRO", "CAROLINA SAES RUIZ", "CATARINA MARQUES RAMOS", "CECÍLIA ZAN BARROSO", "EDUARDO FRANCO TOLEDO PINTO", "ENZO ANDRADE ALVES", "FELIPE GUIMARÃES DE SOUZA", "GABRIEL YUZUI VICECONTI", "GIOVANI DIEZEL MUNHOZ", "GIULIA REZENDE PASSOS", "ISABELA AGOSTINELI TRIDAPALLI", "ISABELLA BOAVENTURA GOMES DA SILVA OLIVEIRA", "LARISSA DAMASCENO BRUDER SANTINI", "LÍVIA MAXCARENHAS BEDULLI", "LORENZO ATTIÊ BRUNI", "LUCAS BERNARDO MATUTINO DE OLIVEIRA", "MARCELLA TARABORELLI LIMONGELLI", "MARCELO SOUZA VARCA", "MARCUS MIGUEL CORDEIRO DE MORAES", "MARIA EDUARDA LEMOS LIMA", "MARIAH ANTONELLA MACIEL MAESTÁ", "MATEUS CARVALHO MADEIRA", "MATHEUS DA SILVA VACCARO", "PEDRO CAMPOS VIZCARRA ZUNIGA"],
+                '5ºB': ["ALICE BELLUCCI ASCENCIO", "ALICE DE FREITAS OLHIER", "ANTONELLA JULIO VETTORAZZO CHIESA REY", "ARTHUR CORDEIRO PIZA", "BERNARDO VENTURA SÃO PIETRO", "CAROLINA SAES RUIZ", "CATARINA MARQUES RAMOS", "CECÍLIA ZAN BARROSO", "EDUARDO FRANCO TOLEDO PINTO", "ENZO ANDRADE ALVES", "FELIPE GUIMARÃES DE SOUZA", "GABRIEL YUZUI VICECONTI", "GIOVANI DIEZEL MUNHOZ", "GIULIA REZENDE PASSOS", "ISABELA AGOSTINELI TRIDAPALLI", "ISABELLA BOAVENTURA GOMES DA SILVA OLIVEIRA", "LARISSA DAMASCENO BRUDER SANTINI", "LÍVIA MAXCARENHAS BEDULLI", "LORENZO ATTIÊ BRUNI", "MARCELLA TARABORELLI LIMONGELLI", "MARCELO SOUZA VARCA", "MARCUS MIGUEL CORDEIRO DE MORAES", "MARIA EDUARDA LEMOS LIMA", "MARIAH ANTONELLA MACIEL MAESTÁ", "MATEUS CARVALHO MADEIRA", "MATHEUS DA SILVA VACCARO", "PEDRO CAMPOS VIZCARRA ZUNIGA"],
                 '5ºC': ["ALICE VIEIRA ESTEVES", "BEATRIZ PAZINI SOARES", "BERNARDO MICHELETTI FRANCISCO", "CECÍLIA SALCEDO FERNANDES", "CLARA COSTA RIBAS FRAMIL SANCHES", "DAVI CARVALHO DE VASCELOS", "ENRICO FESTINO MARTORELLI", "GABRIEL RIBEIRO DA SILVA", "GIOVANNA DA SILVA PRESTES", "GIOVANNA LA TORRE MARTINS", "GIULIA VIEIRA SACCOMANO", "JOÃO LUCCA SANTI SILVA", "JOSÉ FORTE PESSOA JUNIOR", "LAURA AGRA DE MORAES", "LEONARDO DA SILVA CORRÊA", "LORENA MIDLEY PAULETTI", "LUIZA HIGUCHI ROSA", "MARI UEDA POSSATO VENANCIO", "MARIA FERNANDA RUIVO ALBIERO", "MARIA LÚCIA LODI PALHARES", "MATHEUS BORGES GARRIDO", "MATHEUS CARDOSO LICHMANN", "PEDRO DOS SANTOS FREITAS", "RAFAEL DE BARROS VICENTIN", "RAFAELA RAMALHO GUIRELI", "STELLA HOFFMANN FOGAÇA", "VALENTINA PALEARI CASSIMIRO", "VÍTOR HENRIQUE MARTINS DE PAULO"]
             },
             "Ser! Criança": {
